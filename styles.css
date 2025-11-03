@@ -1,0 +1,759 @@
+/* ========================================
+   Variables CSS
+   ======================================== */
+:root {
+    /* Colores Principales */
+    --color-primary: #9c27b0;
+    --color-secondary: #00bcd4;
+    --color-accent: #e91e63;
+    
+    /* Colores de Estado */
+    --color-success: #4caf50;
+    --color-warning: #ff9800;
+    --color-error: #f44336;
+    --color-info: #2196f3;
+    
+    /* Colores de Fondo */
+    --bg-primary: #ffffff;
+    --bg-secondary: #f8f9fa;
+    --bg-gradient: linear-gradient(135deg, #f3e7f9 0%, #e0f7fa 50%, #fce4ec 100%);
+    
+    /* Colores de Texto */
+    --text-primary: #212529;
+    --text-secondary: #6c757d;
+    --text-muted: #adb5bd;
+    --text-white: #ffffff;
+    
+    /* Bordes */
+    --border-color: #dee2e6;
+    --border-radius-sm: 6px;
+    --border-radius-md: 10px;
+    --border-radius-lg: 14px;
+    
+    /* Sombras */
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.08);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+    --shadow-xl: 0 12px 32px rgba(0, 0, 0, 0.15);
+    
+    /* Espaciado */
+    --spacing-xs: 8px;
+    --spacing-sm: 12px;
+    --spacing-md: 20px;
+    --spacing-lg: 32px;
+    --spacing-xl: 48px;
+    
+    /* Tipografía */
+    --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    --font-size-sm: 0.875rem;
+    --font-size-base: 1rem;
+    --font-size-lg: 1.125rem;
+    --font-size-xl: 1.5rem;
+    --font-size-2xl: 2rem;
+    
+    /* Transiciones */
+    --transition-fast: 0.2s ease;
+    --transition-base: 0.3s ease;
+    --transition-slow: 0.4s ease;
+}
+
+/* ========================================
+   Reset y Estilos Base
+   ======================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-family);
+    font-size: var(--font-size-base);
+    color: var(--text-primary);
+    background: var(--bg-gradient);
+    line-height: 1.6;
+    min-height: 100vh;
+    padding: var(--spacing-md);
+}
+
+/* ========================================
+   Layout Principal
+   ======================================== */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* ========================================
+   Header
+   ======================================== */
+.header {
+    background: var(--bg-primary);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-md);
+    padding: var(--spacing-lg);
+    margin-bottom: var(--spacing-lg);
+}
+
+.header-content {
+    text-align: left;
+}
+
+.header-title {
+    font-size: var(--font-size-2xl);
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-xs);
+    letter-spacing: -0.5px;
+}
+
+.header-subtitle {
+    font-size: var(--font-size-base);
+    color: var(--text-secondary);
+    font-weight: 400;
+}
+
+/* ========================================
+   Main Content
+   ======================================== */
+.main-content {
+    margin-bottom: var(--spacing-lg);
+}
+
+.form-container {
+    background: var(--bg-primary);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-md);
+    padding: var(--spacing-xl);
+}
+
+/* ========================================
+   Secciones del Formulario
+   ======================================== */
+.form-section {
+    margin-bottom: var(--spacing-xl);
+}
+
+.form-section:last-child {
+    margin-bottom: 0;
+}
+
+.section-title {
+    font-size: var(--font-size-xl);
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-lg);
+    display: flex;
+    align-items: center;
+    padding-bottom: var(--spacing-sm);
+    border-bottom: 2px solid var(--border-color);
+}
+
+.section-icon {
+    margin-right: var(--spacing-sm);
+    color: var(--color-primary);
+    font-size: var(--font-size-xl);
+}
+
+/* ========================================
+   Sección de Carga de Factura
+   ======================================== */
+.factura-upload-section {
+    background: linear-gradient(135deg, #f3e5f5 0%, #e0f7fa 100%);
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius-md);
+    margin-bottom: var(--spacing-lg);
+}
+
+/* ========================================
+   Métodos de Carga
+   ======================================== */
+.method-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+}
+
+.method-card {
+    background: var(--bg-primary);
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius-md);
+    padding: var(--spacing-lg);
+    text-align: center;
+    cursor: pointer;
+    transition: all var(--transition-base);
+    position: relative;
+    overflow: hidden;
+}
+
+.method-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
+    transform: scaleX(0);
+    transition: transform var(--transition-base);
+}
+
+.method-card:hover {
+    border-color: var(--color-primary);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+}
+
+.method-card:hover::before {
+    transform: scaleX(1);
+}
+
+.method-card.active {
+    border-color: var(--color-primary);
+    background: linear-gradient(135deg, #f3e5f5 0%, #ffffff 100%);
+    box-shadow: var(--shadow-lg);
+}
+
+.method-card.active::before {
+    transform: scaleX(1);
+}
+
+.method-card[data-method="uuid"].active {
+    border-color: var(--color-secondary);
+    background: linear-gradient(135deg, #e0f7fa 0%, #ffffff 100%);
+}
+
+.method-card[data-method="pdf"].active {
+    border-color: var(--color-accent);
+    background: linear-gradient(135deg, #fce4ec 0%, #ffffff 100%);
+}
+
+.method-icon {
+    font-size: 2.5rem;
+    margin-bottom: var(--spacing-sm);
+    color: var(--color-primary);
+}
+
+.method-card[data-method="uuid"] .method-icon {
+    color: var(--color-secondary);
+}
+
+.method-card[data-method="pdf"] .method-icon {
+    color: var(--color-accent);
+}
+
+.method-title {
+    font-size: var(--font-size-lg);
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-xs);
+}
+
+.method-description {
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+}
+
+/* ========================================
+   Toggle de Opciones Alternativas
+   ======================================== */
+.toggle-options-btn {
+    width: 100%;
+    padding: var(--spacing-md);
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-sm);
+    cursor: pointer;
+    font-size: var(--font-size-base);
+    font-weight: 500;
+    color: var(--text-secondary);
+    transition: all var(--transition-base);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-xs);
+}
+
+.toggle-options-btn:hover {
+    background: #e9ecef;
+    border-color: var(--color-primary);
+    color: var(--text-primary);
+}
+
+.toggle-options-btn i {
+    transition: transform var(--transition-base);
+}
+
+.toggle-options-btn.active i {
+    transform: rotate(180deg);
+}
+
+/* ========================================
+   Opciones Alternativas
+   ======================================== */
+.alternative-options {
+    margin-top: var(--spacing-md);
+    padding: var(--spacing-md);
+    background: #fff9e6;
+    border: 2px solid #ffd54f;
+    border-radius: var(--border-radius-md);
+    display: none;
+}
+
+.alternative-options.show {
+    display: block;
+    animation: slideDown var(--transition-base);
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.alert {
+    display: flex;
+    align-items: center;
+    padding: var(--spacing-sm);
+    margin-bottom: var(--spacing-md);
+    border-radius: var(--border-radius-sm);
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+}
+
+.alert-warning {
+    background: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeaa7;
+}
+
+.alert-icon {
+    margin-right: var(--spacing-xs);
+}
+
+.method-card-alternative {
+    margin-top: var(--spacing-sm);
+}
+
+/* ========================================
+   Contenido de Métodos
+   ======================================== */
+.method-content {
+    display: none;
+    margin-top: var(--spacing-lg);
+    animation: fadeIn var(--transition-base);
+}
+
+.method-content.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* ========================================
+   Toggle XML (Archivo/Pegar)
+   ======================================== */
+.xml-input-toggle {
+    display: flex;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-md);
+}
+
+.toggle-btn {
+    flex: 1;
+    padding: var(--spacing-md);
+    background: var(--bg-primary);
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius-sm);
+    cursor: pointer;
+    font-size: var(--font-size-base);
+    font-weight: 500;
+    color: var(--text-secondary);
+    transition: all var(--transition-base);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-xs);
+}
+
+.toggle-btn:hover {
+    border-color: var(--color-primary);
+    color: var(--text-primary);
+}
+
+.toggle-btn.active {
+    border-color: var(--color-primary);
+    background: linear-gradient(135deg, #f3e5f5 0%, #ffffff 100%);
+    color: var(--color-primary);
+    font-weight: 600;
+}
+
+/* ========================================
+   Grupos de Input
+   ======================================== */
+.input-group {
+    margin-bottom: var(--spacing-lg);
+    display: none;
+}
+
+.input-group.active {
+    display: block;
+}
+
+/* IMPORTANTE: Los input-group dentro de form-grid siempre se muestran */
+.form-grid .input-group {
+    display: block;
+}
+
+.form-label {
+    display: block;
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-sm);
+}
+
+.form-label.required::after {
+    content: ' *';
+    color: var(--color-error);
+}
+
+/* ========================================
+   Inputs de Texto
+   ======================================== */
+.text-input {
+    width: 100%;
+    padding: var(--spacing-sm) var(--spacing-md);
+    font-size: var(--font-size-base);
+    color: var(--text-primary);
+    background: var(--bg-primary);
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius-sm);
+    transition: all var(--transition-base);
+}
+
+.text-input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 4px rgba(156, 39, 176, 0.1);
+}
+
+.text-input::placeholder {
+    color: var(--text-muted);
+}
+
+.uuid-input {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: var(--font-size-lg);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.uuid-input:focus {
+    border-color: var(--color-secondary);
+    box-shadow: 0 0 0 4px rgba(0, 188, 212, 0.1);
+}
+
+/* ========================================
+   Textarea
+   ======================================== */
+.textarea-input {
+    width: 100%;
+    padding: var(--spacing-md);
+    font-size: var(--font-size-sm);
+    font-family: 'Courier New', Courier, monospace;
+    color: var(--text-primary);
+    background: var(--bg-primary);
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius-sm);
+    resize: vertical;
+    transition: all var(--transition-base);
+    line-height: 1.5;
+}
+
+.textarea-input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 4px rgba(156, 39, 176, 0.1);
+}
+
+.textarea-input::placeholder {
+    color: var(--text-muted);
+}
+
+/* ========================================
+   Zona de Carga de Archivos
+   ======================================== */
+.file-upload-zone {
+    border: 2px dashed var(--border-color);
+    border-radius: var(--border-radius-md);
+    padding: var(--spacing-xl);
+    text-align: center;
+    cursor: pointer;
+    transition: all var(--transition-base);
+    background: var(--bg-secondary);
+}
+
+.file-upload-zone:hover {
+    border-color: var(--color-primary);
+    background: #f8f4fc;
+}
+
+.file-upload-zone.dragover {
+    border-color: var(--color-primary);
+    background: #f3e5f5;
+    transform: scale(1.02);
+}
+
+.upload-icon {
+    font-size: 3rem;
+    color: var(--text-muted);
+    margin-bottom: var(--spacing-sm);
+}
+
+.upload-text {
+    font-size: var(--font-size-base);
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin-bottom: var(--spacing-xs);
+}
+
+.upload-hint {
+    font-size: var(--font-size-sm);
+    color: var(--text-muted);
+}
+
+.file-input {
+    display: none;
+}
+
+/* ========================================
+   Mensajes de Ayuda y Error
+   ======================================== */
+.input-hint {
+    font-size: var(--font-size-sm);
+    color: var(--text-muted);
+    margin-top: var(--spacing-xs);
+}
+
+.error-message {
+    font-size: var(--font-size-sm);
+    color: var(--color-error);
+    margin-top: var(--spacing-xs);
+    display: none;
+    font-weight: 500;
+}
+
+.error-message.show {
+    display: block;
+}
+
+.text-input.error,
+.textarea-input.error {
+    border-color: var(--color-error);
+}
+
+.text-input.error:focus,
+.textarea-input.error:focus {
+    box-shadow: 0 0 0 4px rgba(244, 67, 54, 0.1);
+}
+
+/* ========================================
+   Grid de Formulario
+   ======================================== */
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--spacing-lg);
+}
+
+/* ========================================
+   Acciones del Formulario
+   ======================================== */
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-xl);
+    padding-top: var(--spacing-lg);
+    border-top: 2px solid var(--border-color);
+}
+
+.btn {
+    padding: var(--spacing-md) var(--spacing-lg);
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    border: none;
+    border-radius: var(--border-radius-sm);
+    cursor: pointer;
+    transition: all var(--transition-base);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    box-shadow: var(--shadow-sm);
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 50%, var(--color-accent) 100%);
+    color: var(--text-white);
+}
+
+.btn-primary:hover {
+    box-shadow: var(--shadow-lg);
+}
+
+.btn-secondary {
+    background: var(--bg-secondary);
+    color: var(--text-secondary);
+    border: 2px solid var(--border-color);
+}
+
+.btn-secondary:hover {
+    background: #e9ecef;
+    color: var(--text-primary);
+    border-color: var(--text-secondary);
+}
+
+/* ========================================
+   Footer
+   ======================================== */
+.footer {
+    text-align: center;
+    padding: var(--spacing-md);
+}
+
+.footer-text {
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+}
+
+/* ========================================
+   Responsive Design
+   ======================================== */
+@media (max-width: 768px) {
+    body {
+        padding: var(--spacing-sm);
+    }
+
+    .header {
+        padding: var(--spacing-md);
+    }
+
+    .header-title {
+        font-size: var(--font-size-xl);
+    }
+
+    .form-container {
+        padding: var(--spacing-md);
+    }
+
+    .section-title {
+        font-size: var(--font-size-lg);
+    }
+
+    .method-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-actions {
+        flex-direction: column-reverse;
+    }
+
+    .btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .xml-input-toggle {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 480px) {
+    .header-title {
+        font-size: var(--font-size-lg);
+    }
+
+    .section-title {
+        font-size: var(--font-size-base);
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .section-icon {
+        margin-bottom: var(--spacing-xs);
+    }
+}
+
+/* ========================================
+   Animaciones y Transiciones
+   ======================================== */
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.loading {
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+/* ========================================
+   Utilidades
+   ======================================== */
+.hidden {
+    display: none !important;
+}
+
+.visible {
+    display: block !important;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.mt-0 { margin-top: 0; }
+.mt-1 { margin-top: var(--spacing-xs); }
+.mt-2 { margin-top: var(--spacing-sm); }
+.mt-3 { margin-top: var(--spacing-md); }
+.mt-4 { margin-top: var(--spacing-lg); }
+
+.mb-0 { margin-bottom: 0; }
+.mb-1 { margin-bottom: var(--spacing-xs); }
+.mb-2 { margin-bottom: var(--spacing-sm); }
+.mb-3 { margin-bottom: var(--spacing-md); }
+.mb-4 { margin-bottom: var(--spacing-lg); }
