@@ -70,7 +70,8 @@ let appState = {
     uploadedFiles: {
         xml: null,
         pdf: null
-    }
+    },
+    extractedUUID: null
 };
 
 // ========================================
@@ -110,6 +111,42 @@ function formatFileSize(bytes) {
     const sizes = ['Bytes', 'KB', 'MB', 'GB'];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i];
+}
+
+// ========================================
+// FUNCIÓN PARA EXTRAER UUID DEL XML
+// ========================================
+
+function extractUUIDFromXML(xmlContent) {
+    try {
+        // Buscar el UUID dentro de las etiquetas dte:NumeroAutorizacion
+        const regex = /<dte:NumeroAutorizacion[^>]*>([A-F0-9]{8}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{12})<\/dte:NumeroAutorizacion>/i;
+        const match = xmlContent.match(regex);
+        
+        if (match && match[1]) {
+            return match[1].toUpperCase();
+        }
+        
+        // Intentar con parser XML si la regex no funciona
+        const parser = new DOMParser();
+        const xmlDoc = parser.parseFromString(xmlContent, 'text/xml');
+        
+        // Buscar el elemento NumeroAutorizacion
+        const numeroAutorizacion = xmlDoc.getElementsByTagName('dte:NumeroAutorizacion')[0] || 
+                                   xmlDoc.getElementsByTagName('NumeroAutorizacion')[0];
+        
+        if (numeroAutorizacion && numeroAutorizacion.textContent) {
+            const uuid = numeroAutorizacion.textContent.trim();
+            if (validateUUID(uuid)) {
+                return uuid.toUpperCase();
+            }
+        }
+        
+        return null;
+    } catch (error) {
+        console.error('Error al extraer UUID del XML:', error);
+        return null;
+    }
 }
 
 // ========================================
@@ -207,10 +244,34 @@ function handleXMLFileUpload(file) {
         return;
     }
     
+    // Leer el archivo para extraer el UUID
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const xmlContent = e.target.result;
+        const uuid = extractUUIDFromXML(xmlContent);
+        
+        if (uuid) {
+            appState.extractedUUID = uuid;
+            elements.xmlFileText.innerHTML = `✓ ${file.name}<br><small style="color: var(--color-success); font-weight: 600;">UUID extraído: ${uuid}</small>`;
+            elements.xmlUploadZone.style.borderColor = 'var(--color-success)';
+            elements.xmlUploadZone.style.background = '#f1f8f4';
+            console.log('UUID extraído del XML:', uuid);
+        } else {
+            appState.extractedUUID = null;
+            elements.xmlFileText.innerHTML = `✓ ${file.name}<br><small style="color: var(--color-warning); font-weight: 600;">⚠ No se pudo extraer el UUID automáticamente</small>`;
+            elements.xmlUploadZone.style.borderColor = 'var(--color-warning)';
+            elements.xmlUploadZone.style.background = '#fff9e6';
+            console.warn('No se pudo extraer el UUID del XML');
+        }
+    };
+    
+    reader.onerror = function() {
+        showError(elements.xmlFileError, 'Error al leer el archivo XML.');
+        elements.xmlFileInput.value = '';
+    };
+    
+    reader.readAsText(file);
     appState.uploadedFiles.xml = file;
-    elements.xmlFileText.textContent = `✓ ${file.name}`;
-    elements.xmlUploadZone.style.borderColor = 'var(--color-success)';
-    elements.xmlUploadZone.style.background = '#f1f8f4';
 }
 
 function handlePDFFileUpload(file) {
@@ -274,6 +335,13 @@ function validateForm() {
                 showError(elements.xmlContentError, 'Por favor, pega el contenido XML.');
                 elements.xmlTextarea.classList.add('error');
                 isValid = false;
+            } else {
+                // Intentar extraer UUID del contenido pegado
+                const uuid = extractUUIDFromXML(xmlContent);
+                if (uuid) {
+                    appState.extractedUUID = uuid;
+                    console.log('UUID extraído del contenido XML:', uuid);
+                }
             }
         }
     } else if (appState.selectedMethod === 'uuid') {
@@ -332,8 +400,10 @@ function handleSubmit(e) {
     if (appState.selectedMethod === 'xml') {
         if (appState.xmlInputType === 'file') {
             formData.xmlFile = appState.uploadedFiles.xml;
+            formData.extractedUUID = appState.extractedUUID;
         } else {
             formData.xmlContent = elements.xmlTextarea.value.trim();
+            formData.extractedUUID = appState.extractedUUID;
         }
     } else if (appState.selectedMethod === 'uuid') {
         formData.uuid = elements.uuidInput.value.trim();
@@ -342,13 +412,25 @@ function handleSubmit(e) {
     }
     
     console.log('Datos del formulario:', formData);
-    alert('Formulario enviado correctamente. Revisa la consola para ver los datos.');
+    
+    // Mostrar alerta con información
+    let message = 'Formulario enviado correctamente.\n\n';
+    message += `Método: ${formData.method}\n`;
+    message += `Orden de Compra: ${formData.ordenCompra}\n`;
+    message += `Entrada de Mercancía: ${formData.entradaMercancia}\n`;
+    
+    if (formData.extractedUUID) {
+        message += `\n✓ UUID extraído: ${formData.extractedUUID}`;
+    }
+    
+    alert(message);
 }
 
 function handleReset() {
     appState.selectedMethod = 'xml';
     appState.xmlInputType = 'file';
     appState.uploadedFiles = { xml: null, pdf: null };
+    appState.extractedUUID = null;
     
     changeMethod('xml');
     toggleXMLInput('file');
