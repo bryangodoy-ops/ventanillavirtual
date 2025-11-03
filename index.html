@@ -1,1 +1,199 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal de Proveedores - Sistema de Validación de Facturas</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1 class="header-title">Portal de Proveedores</h1>
+                <p class="header-subtitle">Sistema de Validación de Facturas Electrónicas</p>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="form-container">
+                <form id="facturaForm" class="factura-form" novalidate>
+                    
+                    <!-- Sección: Información de Factura -->
+                    <section class="form-section">
+                        <h2 class="section-title">
+                            <i class="fas fa-file-invoice section-icon"></i>
+                            <span>Información de Factura</span>
+                        </h2>
+
+                        <div class="factura-upload-section">
+                            <label class="form-label required">Método de Carga de Factura</label>
+
+                            <!-- Métodos Principales: XML y UUID -->
+                            <div class="method-grid">
+                                <button type="button" class="method-card active" id="xmlMethodBtn" data-method="xml">
+                                    <i class="fas fa-file-code method-icon"></i>
+                                    <h3 class="method-title">XML</h3>
+                                    <p class="method-description">Archivo o contenido XML</p>
+                                </button>
+
+                                <button type="button" class="method-card" id="uuidMethodBtn" data-method="uuid">
+                                    <i class="fas fa-fingerprint method-icon"></i>
+                                    <h3 class="method-title">UUID</h3>
+                                    <p class="method-description">Folio Fiscal</p>
+                                </button>
+                            </div>
+
+                            <!-- Toggle para Opciones Alternativas -->
+                            <button type="button" class="toggle-options-btn" id="toggleOptionsBtn">
+                                <i class="fas fa-chevron-down" id="toggleIcon"></i>
+                                <span id="toggleText">Mostrar opciones alternativas</span>
+                            </button>
+
+                            <!-- Opciones Alternativas: PDF -->
+                            <div class="alternative-options" id="alternativeOptions">
+                                <div class="alert alert-warning">
+                                    <i class="fas fa-exclamation-triangle alert-icon"></i>
+                                    <span>Se recomienda utilizar XML o UUID para una validación más precisa</span>
+                                </div>
+                                <button type="button" class="method-card method-card-alternative" id="pdfMethodBtn" data-method="pdf">
+                                    <i class="fas fa-file-pdf method-icon"></i>
+                                    <h3 class="method-title">PDF</h3>
+                                    <p class="method-description">Archivo PDF de la factura</p>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Contenido Dinámico: XML -->
+                        <div class="method-content active" id="xmlContent">
+                            <div class="xml-input-toggle">
+                                <button type="button" class="toggle-btn active" id="xmlFileToggle" data-xml-method="file">
+                                    <i class="fas fa-upload"></i>
+                                    <span>Cargar Archivo</span>
+                                </button>
+                                <button type="button" class="toggle-btn" id="xmlPasteToggle" data-xml-method="paste">
+                                    <i class="fas fa-paste"></i>
+                                    <span>Pegar Contenido</span>
+                                </button>
+                            </div>
+
+                            <!-- Subir Archivo XML -->
+                            <div class="input-group active" id="xmlFileGroup">
+                                <label for="xmlFileInput" class="form-label required">Archivo XML</label>
+                                <div class="file-upload-zone" id="xmlUploadZone">
+                                    <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                                    <p class="upload-text" id="xmlFileText">Seleccione o arrastre el archivo XML</p>
+                                    <p class="upload-hint">Formato aceptado: .xml</p>
+                                </div>
+                                <input type="file" id="xmlFileInput" accept=".xml" class="file-input" aria-label="Archivo XML">
+                                <div class="error-message" id="xmlFileError"></div>
+                            </div>
+
+                            <!-- Pegar Contenido XML -->
+                            <div class="input-group" id="xmlPasteGroup">
+                                <label for="xmlTextarea" class="form-label required">Contenido XML</label>
+                                <textarea 
+                                    id="xmlTextarea" 
+                                    class="textarea-input" 
+                                    rows="10" 
+                                    placeholder="Pegue aquí el contenido completo del archivo XML..."
+                                    aria-label="Contenido XML"
+                                ></textarea>
+                                <div class="error-message" id="xmlContentError"></div>
+                            </div>
+                        </div>
+
+                        <!-- Contenido Dinámico: UUID -->
+                        <div class="method-content" id="uuidContent">
+                            <div class="input-group">
+                                <label for="uuidInput" class="form-label required">UUID (Folio Fiscal)</label>
+                                <input 
+                                    type="text" 
+                                    id="uuidInput" 
+                                    class="text-input uuid-input" 
+                                    placeholder="AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA"
+                                    maxlength="36"
+                                    aria-label="UUID de la factura"
+                                >
+                                <p class="input-hint">Formato: 8-4-4-4-12 caracteres alfanuméricos separados por guiones</p>
+                                <div class="error-message" id="uuidError"></div>
+                            </div>
+                        </div>
+
+                        <!-- Contenido Dinámico: PDF -->
+                        <div class="method-content" id="pdfContent">
+                            <div class="input-group">
+                                <label for="pdfFileInput" class="form-label required">Archivo PDF</label>
+                                <div class="file-upload-zone" id="pdfUploadZone">
+                                    <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                                    <p class="upload-text" id="pdfFileText">Seleccione o arrastre el archivo PDF</p>
+                                    <p class="upload-hint">Formato aceptado: .pdf</p>
+                                </div>
+                                <input type="file" id="pdfFileInput" accept=".pdf" class="file-input" aria-label="Archivo PDF">
+                                <div class="error-message" id="pdfFileError"></div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Sección: Documentos Relacionados -->
+                    <section class="form-section">
+                        <h2 class="section-title">
+                            <i class="fas fa-link section-icon"></i>
+                            <span>Documentos Relacionados</span>
+                        </h2>
+
+                        <div class="form-grid">
+                            <div class="input-group">
+                                <label for="ordenCompraInput" class="form-label required">Número de Orden de Compra</label>
+                                <input 
+                                    type="text" 
+                                    id="ordenCompraInput" 
+                                    class="text-input" 
+                                    placeholder="Ej: OC-2025-001234"
+                                    aria-label="Número de orden de compra"
+                                >
+                                <div class="error-message" id="ordenCompraError"></div>
+                            </div>
+
+                            <div class="input-group">
+                                <label for="entradaMercanciaInput" class="form-label required">Número de Entrada de Mercancía</label>
+                                <input 
+                                    type="text" 
+                                    id="entradaMercanciaInput" 
+                                    class="text-input" 
+                                    placeholder="Ej: EM-2025-005678"
+                                    aria-label="Número de entrada de mercancía"
+                                >
+                                <div class="error-message" id="entradaMercanciaError"></div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Botones de Acción -->
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" id="cancelBtn">
+                            <i class="fas fa-times"></i>
+                            <span>Cancelar</span>
+                        </button>
+                        <button type="submit" class="btn btn-primary" id="submitBtn">
+                            <i class="fas fa-paper-plane"></i>
+                            <span>Enviar para Validación</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p class="footer-text">Portal de Proveedores &copy; 2025 - Sistema de Validación de Facturas Electrónicas</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
 
