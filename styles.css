@@ -406,14 +406,26 @@ body {
    ======================================== */
 .input-group {
     margin-bottom: var(--spacing-lg);
+}
+
+/* IMPORTANTE: Solo ocultar input-group dentro de xmlContent cuando no estén activos */
+#xmlFileGroup,
+#xmlPasteGroup {
     display: none;
 }
 
-.input-group.active {
+#xmlFileGroup.active,
+#xmlPasteGroup.active {
     display: block;
 }
 
-/* IMPORTANTE: Los input-group dentro de form-grid siempre se muestran */
+/* Los input-group dentro de uuidContent y pdfContent siempre visibles cuando el método está activo */
+#uuidContent .input-group,
+#pdfContent .input-group {
+    display: block;
+}
+
+/* Los input-group dentro de form-grid siempre se muestran */
 .form-grid .input-group {
     display: block;
 }
