@@ -3,9 +3,9 @@
    ======================================== */
 :root {
     /* Colores Principales */
-    --color-primary: #9c27b0;
-    --color-secondary: #00bcd4;
-    --color-accent: #e91e63;
+    --color-primary: rgb(0, 62, 131);
+    --color-secondary: rgb(0, 188, 212);
+    --color-accent: rgb(2, 163, 185);
     
     /* Colores de Estado */
     --color-success: #4caf50;
@@ -16,7 +16,7 @@
     /* Colores de Fondo */
     --bg-primary: #ffffff;
     --bg-secondary: #f8f9fa;
-    --bg-gradient: linear-gradient(135deg, #f3e7f9 0%, #e0f7fa 50%, #fce4ec 100%);
+    --bg-gradient: rgba(0 62 131);
     
     /* Colores de Texto */
     --text-primary: #212529;
@@ -93,10 +93,27 @@ body {
     box-shadow: var(--shadow-md);
     padding: var(--spacing-lg);
     margin-bottom: var(--spacing-lg);
+    background: var(--bg-primary);
+    
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* logo + textos en fila */
+  gap: var(--spacing-lg);
+}
+
+.header-logo {
+  height: 15vh;
+  width: auto;
+  display: block;
+  object-fit: contain;
 }
 
 .header-content {
-    text-align: left;
+   margin-left: auto;     /* empuja el bloque de textos hacia la derecha */
+  text-align: right;     /* alinea el texto a la derecha */
 }
 
 .header-title {
@@ -159,7 +176,8 @@ body {
    Sección de Carga de Factura
    ======================================== */
 .factura-upload-section {
-    background: linear-gradient(135deg, #f3e5f5 0%, #e0f7fa 100%);
+    background: white;
+    border: 1px solid var(--border-color);
     padding: var(--spacing-lg);
     border-radius: var(--border-radius-md);
     margin-bottom: var(--spacing-lg);
@@ -628,7 +646,7 @@ body {
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 50%, var(--color-accent) 100%);
+    background: var(--color-primary);/*linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 50%, var(--color-accent) 100%);*/
     color: var(--text-white);
 }
 
@@ -673,9 +691,21 @@ body {
         padding: var(--spacing-md);
     }
 
-    .header-title {
-        font-size: var(--font-size-xl);
-    }
+    .header-inner {
+    flex-direction: column;   /* apila logo y textos */
+    align-items: center;      /* centra horizontalmente */
+    gap: var(--spacing-md);
+  }
+
+    .header-content {
+    margin-left: 0;           /* quita el empuje a la derecha */
+    text-align: center;       /* centra el texto en móvil */
+    width: 100%;              /* opcional, para asegurar centrar */
+  }
+
+  .header-logo {
+    height: 15vh;              /* opcional: un poco más grande en móvil */
+  }
 
     .form-container {
         padding: var(--spacing-md);
