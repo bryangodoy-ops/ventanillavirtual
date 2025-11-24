@@ -138,6 +138,87 @@
 
         <!-- Main Content -->
         <main class="main-content">
+
+             <!-- Sección: Documentos Relacionados -->
+                    <section class="form-section">
+  <h2 class="section-title">
+    <i class="fas fa-link section-icon"></i>
+    <span>Órdenes de compra disponibles</span>
+  </h2>
+
+  <p class="section-helper-text">
+    Selecciona una orden de compra y su entrada de mercancía asociada. Luego carga la factura para continuar con la validación.
+  </p>
+
+  <div class="oc-table-wrapper">
+    <table class="oc-table" id="tabla-ocs">
+      <thead>
+        <tr>
+          <th>Orden de compra</th>
+          <th>Entrada de mercancía</th>
+          <th>Proveedor</th>
+          <th>Monto pendiente</th>
+          <th>Estado</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>OC-2025-001234</td>
+          <td>EM-2025-005678</td>
+          <td>Proveedor Demo 1</td>
+          <td>Q 25,000.00</td>
+          <td><span class="oc-status-pill oc-status-open">Abierta</span></td>
+          <td>
+            <button type="button"
+                    class="oc-select-btn"
+                    data-oc="OC-2025-001234"
+                    data-em="EM-2025-005678">
+              Seleccionar
+            </button>
+          </td>
+        </tr>
+        <tr>
+          <td>OC-2025-001235</td>
+          <td>EM-2025-005679</td>
+          <td>Proveedor Demo 2</td>
+          <td>Q 15,500.00</td>
+          <td><span class="oc-status-pill oc-status-open">Abierta</span></td>
+          <td>
+            <button type="button"
+                    class="oc-select-btn"
+                    data-oc="OC-2025-001235"
+                    data-em="EM-2025-005679">
+              Seleccionar
+            </button>
+          </td>
+        </tr>
+        <tr>
+          <td>OC-2025-001236</td>
+          <td>EM-2025-005680</td>
+          <td>Proveedor Demo 3</td>
+          <td>Q 8,750.00</td>
+          <td><span class="oc-status-pill oc-status-partial">Parcial</span></td>
+          <td>
+            <button type="button"
+                    class="oc-select-btn"
+                    data-oc="OC-2025-001236"
+                    data-em="EM-2025-005680">
+              Seleccionar
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p id="ocSeleccionadaMensaje"></p>
+
+  <!-- Estos inputs no se ven, pero viajan con el formulario -->
+  <input type="hidden" id="ordenCompraSeleccionada" name="ordenCompraSeleccionada">
+  <input type="hidden" id="entradaMercanciaSeleccionada" name="entradaMercanciaSeleccionada">
+</section>
+            
             <div class="form-container">
                 <form id="facturaForm" class="factura-form" novalidate>
 
@@ -252,87 +333,6 @@
                             </div>
                         </div>
                     </section>
-
-                    <!-- Sección: Documentos Relacionados -->
-                    <section class="form-section">
-  <h2 class="section-title">
-    <i class="fas fa-link section-icon"></i>
-    <span>Órdenes de compra disponibles</span>
-  </h2>
-
-  <p class="section-helper-text">
-    Selecciona una orden de compra y su entrada de mercancía asociada. Luego carga la factura para continuar con la validación.
-  </p>
-
-  <div class="oc-table-wrapper">
-    <table class="oc-table" id="tabla-ocs">
-      <thead>
-        <tr>
-          <th>Orden de compra</th>
-          <th>Entrada de mercancía</th>
-          <th>Proveedor</th>
-          <th>Monto pendiente</th>
-          <th>Estado</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>OC-2025-001234</td>
-          <td>EM-2025-005678</td>
-          <td>Proveedor Demo 1</td>
-          <td>Q 25,000.00</td>
-          <td><span class="oc-status-pill oc-status-open">Abierta</span></td>
-          <td>
-            <button type="button"
-                    class="oc-select-btn"
-                    data-oc="OC-2025-001234"
-                    data-em="EM-2025-005678">
-              Seleccionar
-            </button>
-          </td>
-        </tr>
-        <tr>
-          <td>OC-2025-001235</td>
-          <td>EM-2025-005679</td>
-          <td>Proveedor Demo 2</td>
-          <td>Q 15,500.00</td>
-          <td><span class="oc-status-pill oc-status-open">Abierta</span></td>
-          <td>
-            <button type="button"
-                    class="oc-select-btn"
-                    data-oc="OC-2025-001235"
-                    data-em="EM-2025-005679">
-              Seleccionar
-            </button>
-          </td>
-        </tr>
-        <tr>
-          <td>OC-2025-001236</td>
-          <td>EM-2025-005680</td>
-          <td>Proveedor Demo 3</td>
-          <td>Q 8,750.00</td>
-          <td><span class="oc-status-pill oc-status-partial">Parcial</span></td>
-          <td>
-            <button type="button"
-                    class="oc-select-btn"
-                    data-oc="OC-2025-001236"
-                    data-em="EM-2025-005680">
-              Seleccionar
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <p id="ocSeleccionadaMensaje"></p>
-
-  <!-- Estos inputs no se ven, pero viajan con el formulario -->
-  <input type="hidden" id="ordenCompraSeleccionada" name="ordenCompraSeleccionada">
-  <input type="hidden" id="entradaMercanciaSeleccionada" name="entradaMercanciaSeleccionada">
-</section>
-
 
                     <!-- Botones de Acción -->
                     <div class="form-actions">
