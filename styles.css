@@ -799,3 +799,83 @@ body {
 .mb-2 { margin-bottom: var(--spacing-sm); }
 .mb-3 { margin-bottom: var(--spacing-md); }
 .mb-4 { margin-bottom: var(--spacing-lg); }
+
+.oc-table-wrapper {
+  margin-top: 1rem;
+  overflow-x: auto;
+}
+
+.oc-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.oc-table thead {
+  background-color: #0b2c5d;
+  color: #ffffff;
+}
+
+.oc-table th,
+.oc-table td {
+  padding: 0.55rem 0.75rem;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.oc-table tbody tr:nth-child(even) {
+  background-color: #f3f4f6;
+}
+
+.oc-table tbody tr:hover {
+  background-color: #e5e7eb;
+}
+
+.oc-table tbody tr.selected {
+  background-color: #dbeafe;
+  outline: 2px solid #2563eb;
+}
+
+.oc-status-pill {
+  display: inline-block;
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.oc-status-open {
+  background-color: #d1fae5;
+  color: #047857;
+}
+
+.oc-status-partial {
+  background-color: #fef9c3;
+  color: #92400e;
+}
+
+.oc-select-btn {
+  padding: 0.3rem 0.8rem;
+  border-radius: 999px;
+  border: none;
+  background-color: #2563eb;
+  color: #ffffff;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.oc-select-btn:hover {
+  filter: brightness(1.08);
+}
+
+#ocSeleccionadaMensaje {
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  color: #4b5563;
+}
+
+.section-helper-text {
+  font-size: 0.85rem;
+  color: #6b7280;
+  margin-top: 0.25rem;
+}
