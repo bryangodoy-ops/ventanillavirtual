@@ -356,6 +356,18 @@
 
     <script src="script.js"></script>
 
+    <script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const cancelBtn = document.getElementById("cancelBtn");
+
+    if (cancelBtn) {
+      cancelBtn.addEventListener("click", function () {
+        vvLogout();   // Ejecuta el logout
+      });
+    }
+  });
+</script>
+
 <script>
   document.addEventListener("DOMContentLoaded", function () {
     const tablaOcs = document.getElementById("tabla-ocs");
