@@ -358,6 +358,50 @@
 
     <script src="script.js"></script>
 
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const tablaOcs = document.getElementById("tabla-ocs");
+    const hiddenOc = document.getElementById("ordenCompraSeleccionada");
+    const hiddenEm = document.getElementById("entradaMercanciaSeleccionada");
+    const mensaje = document.getElementById("ocSeleccionadaMensaje");
+    const form = document.getElementById("facturaForm");
+
+    if (!tablaOcs || !hiddenOc || !hiddenEm || !form) {
+      console.warn("Tabla de OCs: elementos no encontrados.");
+      return;
+    }
+
+    // Manejar clic en botones "Seleccionar"
+    tablaOcs.addEventListener("click", function (e) {
+      const btn = e.target.closest(".oc-select-btn");
+      if (!btn) return;
+
+      const row = btn.closest("tr");
+      const oc = btn.dataset.oc;
+      const em = btn.dataset.em;
+
+      hiddenOc.value = oc;
+      hiddenEm.value = em;
+
+      // Quitar selección anterior
+      tablaOcs.querySelectorAll("tbody tr").forEach(function (tr) {
+        tr.classList.remove("selected");
+      });
+      row.classList.add("selected");
+
+      mensaje.textContent = `Orden seleccionada: ${oc} / Entrada de mercancía: ${em}`;
+    });
+
+    // Validar que haya una OC seleccionada antes de enviar
+    form.addEventListener("submit", function (e) {
+      if (!hiddenOc.value || !hiddenEm.value) {
+        e.preventDefault();
+        alert("Por favor selecciona una orden de compra antes de enviar la factura.");
+      }
+    });
+  });
+</script>
+    
     <script>
   (function () {
     // 👇 Aquí defines el usuario y contraseña de la PoC
