@@ -554,35 +554,42 @@ if (document.readyState === 'loading') {
 
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("facturaForm");
-  const resultadoBox = document.getElementById("resultado-validacion");
+  const facturaStep = document.getElementById("factura-step");
+  const resultadoStep = document.getElementById("resultado-step");
   const descargarBtn = document.getElementById("descargarPdfBtn");
+  const nuevaFacturaBtn = document.getElementById("nuevaFacturaBtn");
 
-  if (!form || !resultadoBox || !descargarBtn) return;
+  if (!form || !facturaStep || !resultadoStep) return;
 
   form.addEventListener("submit", function (e) {
     e.preventDefault();
 
-    // Aquí en el futuro podrías esperar la respuesta del bot/RPA.
-    // Para la POC, asumimos que todo salió bien y mostramos el mensaje.
-
-    resultadoBox.style.display = "flex";
-
-    // Opcional: desactivar el botón de enviar para que no repitan el proceso
-    const submitBtn = document.getElementById("submitBtn");
-    if (submitBtn) {
-      submitBtn.disabled = true;
-      submitBtn.innerText = "Procesada";
-    }
+    // Aquí, en un mundo ideal, llamarías al bot y esperarías “VALIDADA”.
+    // Para la PoC, asumimos éxito y mostramos la pantalla de resultado.
+    facturaStep.style.display = "none";
+    resultadoStep.style.display = "flex";
   });
 
-  descargarBtn.addEventListener("click", function () {
-    // Descargar un PDF fijo para la POC
-    const link = document.createElement("a");
-    link.href = "ContraseñaDePago.pdf"; // pon aquí el nombre real del PDF en tu repo
-    link.download = "contraseña_pago.pdf";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  });
+  if (descargarBtn) {
+    descargarBtn.addEventListener("click", function () {
+      const link = document.createElement("a");
+      // Asegúrate que este PDF exista en tu repo (mira explicación abajo)
+      link.href = "ContraseñaDePago.pdf";
+      link.download = "contraseña_pago.pdf";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    });
+  }
+
+  if (nuevaFacturaBtn) {
+    nuevaFacturaBtn.addEventListener("click", function () {
+      // Regresa a la pantalla de carga de factura
+      resultadoStep.style.display = "none";
+      facturaStep.style.display = "block";
+      // Si quieres, aquí puedes resetear el form:
+      form.reset();
+    });
+  }
 });
 
