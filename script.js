@@ -60,6 +60,9 @@ const elements = {
   cancelBtn: document.getElementById('cancelBtn'),
   submitBtn: document.getElementById('submitBtn'),
 
+  // Pantalla de carga completa (OC + formulario)
+  facturaStep: document.getElementById('factura-step'),
+
   // Pantalla de resultado
   resultadoStep: document.getElementById('resultado-step'),
   descargarPdfBtn: document.getElementById('descargarPdfBtn'),
@@ -125,7 +128,8 @@ function formatFileSize(bytes) {
 
 function extractUUIDFromXML(xmlContent) {
   try {
-    const regex = /<dte:NumeroAutorizacion[^>]*>([A-F0-9]{8}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{12})<\/dte:NumeroAutorizacion>/i;
+    const regex =
+      /<dte:NumeroAutorizacion[^>]*>([A-F0-9]{8}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{12})<\/dte:NumeroAutorizacion>/i;
     const match = xmlContent.match(regex);
 
     if (match && match[1]) {
@@ -170,15 +174,15 @@ function changeMethod(method) {
     }
   });
 
-  elements.xmlContent.classList.remove('active');
-  elements.uuidContent.classList.remove('active');
-  elements.pdfContent.classList.remove('active');
+  elements.xmlContent?.classList.remove('active');
+  elements.uuidContent?.classList.remove('active');
+  elements.pdfContent?.classList.remove('active');
 
-  if (method === 'xml') {
+  if (method === 'xml' && elements.xmlContent) {
     elements.xmlContent.classList.add('active');
-  } else if (method === 'uuid') {
+  } else if (method === 'uuid' && elements.uuidContent) {
     elements.uuidContent.classList.add('active');
-  } else if (method === 'pdf') {
+  } else if (method === 'pdf' && elements.pdfContent) {
     elements.pdfContent.classList.add('active');
   }
 
@@ -191,10 +195,10 @@ function clearAllErrors() {
   hideError(elements.uuidError);
   hideError(elements.pdfFileError);
 
-  if (elements.xmlFileInput) elements.xmlFileInput.classList.remove('error');
-  if (elements.xmlTextarea) elements.xmlTextarea.classList.remove('error');
-  if (elements.uuidInput) elements.uuidInput.classList.remove('error');
-  if (elements.pdfFileInput) elements.pdfFileInput.classList.remove('error');
+  elements.xmlFileInput?.classList.remove('error');
+  elements.xmlTextarea?.classList.remove('error');
+  elements.uuidInput?.classList.remove('error');
+  elements.pdfFileInput?.classList.remove('error');
 }
 
 // ========================================
@@ -204,16 +208,18 @@ function clearAllErrors() {
 function toggleXMLInput(type) {
   appState.xmlInputType = type;
 
-  if (type === 'file') {
-    elements.xmlFileToggle.classList.add('active');
-    elements.xmlPasteToggle.classList.remove('active');
-    elements.xmlFileGroup.classList.add('active');
-    elements.xmlPasteGroup.classList.remove('active');
-  } else {
-    elements.xmlFileToggle.classList.remove('active');
-    elements.xmlPasteToggle.classList.add('active');
-    elements.xmlFileGroup.classList.remove('active');
-    elements.xmlPasteGroup.classList.add('active');
+  if (elements.xmlFileToggle && elements.xmlPasteToggle && elements.xmlFileGroup && elements.xmlPasteGroup) {
+    if (type === 'file') {
+      elements.xmlFileToggle.classList.add('active');
+      elements.xmlPasteToggle.classList.remove('active');
+      elements.xmlFileGroup.classList.add('active');
+      elements.xmlPasteGroup.classList.remove('active');
+    } else {
+      elements.xmlFileToggle.classList.remove('active');
+      elements.xmlPasteToggle.classList.add('active');
+      elements.xmlFileGroup.classList.remove('active');
+      elements.xmlPasteGroup.classList.add('active');
+    }
   }
 
   hideError(elements.xmlFileError);
@@ -230,7 +236,7 @@ function handleXMLFileUpload(file) {
 
   if (!validateFileExtension(file.name, CONFIG.ALLOWED_XML_EXTENSIONS)) {
     showError(elements.xmlFileError, 'Por favor, selecciona un archivo XML válido.');
-    elements.xmlFileInput.value = '';
+    if (elements.xmlFileInput) elements.xmlFileInput.value = '';
     return;
   }
 
@@ -239,7 +245,7 @@ function handleXMLFileUpload(file) {
       elements.xmlFileError,
       `El archivo es demasiado grande. Tamaño máximo: ${formatFileSize(CONFIG.MAX_FILE_SIZE)}`
     );
-    elements.xmlFileInput.value = '';
+    if (elements.xmlFileInput) elements.xmlFileInput.value = '';
     return;
   }
 
@@ -250,22 +256,30 @@ function handleXMLFileUpload(file) {
 
     if (uuid) {
       appState.extractedUUID = uuid;
-      elements.xmlFileText.innerHTML = `✓ ${file.name}<br><small style="color: var(--color-success); font-weight: 600;">UUID extraído: ${uuid}</small>`;
-      elements.xmlUploadZone.style.borderColor = 'var(--color-success)';
-      elements.xmlUploadZone.style.background = '#f1f8f4';
+      if (elements.xmlFileText) {
+        elements.xmlFileText.innerHTML = `✓ ${file.name}<br><small style="color: var(--color-success); font-weight: 600;">UUID extraído: ${uuid}</small>`;
+      }
+      if (elements.xmlUploadZone) {
+        elements.xmlUploadZone.style.borderColor = 'var(--color-success)';
+        elements.xmlUploadZone.style.background = '#f1f8f4';
+      }
       console.log('UUID extraído del XML:', uuid);
     } else {
       appState.extractedUUID = null;
-      elements.xmlFileText.innerHTML = `✓ ${file.name}<br><small style="color: var(--color-warning); font-weight: 600;">⚠ No se pudo extraer el UUID automáticamente</small>`;
-      elements.xmlUploadZone.style.borderColor = 'var(--color-warning)';
-      elements.xmlUploadZone.style.background = '#fff9e6';
+      if (elements.xmlFileText) {
+        elements.xmlFileText.innerHTML = `✓ ${file.name}<br><small style="color: var(--color-warning); font-weight: 600;">⚠ No se pudo extraer el UUID automáticamente</small>`;
+      }
+      if (elements.xmlUploadZone) {
+        elements.xmlUploadZone.style.borderColor = 'var(--color-warning)';
+        elements.xmlUploadZone.style.background = '#fff9e6';
+      }
       console.warn('No se pudo extraer el UUID del XML');
     }
   };
 
   reader.onerror = function () {
     showError(elements.xmlFileError, 'Error al leer el archivo XML.');
-    elements.xmlFileInput.value = '';
+    if (elements.xmlFileInput) elements.xmlFileInput.value = '';
   };
 
   reader.readAsText(file);
@@ -278,7 +292,7 @@ function handlePDFFileUpload(file) {
 
   if (!validateFileExtension(file.name, CONFIG.ALLOWED_PDF_EXTENSIONS)) {
     showError(elements.pdfFileError, 'Por favor, selecciona un archivo PDF válido.');
-    elements.pdfFileInput.value = '';
+    if (elements.pdfFileInput) elements.pdfFileInput.value = '';
     return;
   }
 
@@ -287,14 +301,16 @@ function handlePDFFileUpload(file) {
       elements.pdfFileError,
       `El archivo es demasiado grande. Tamaño máximo: ${formatFileSize(CONFIG.MAX_FILE_SIZE)}`
     );
-    elements.pdfFileInput.value = '';
+    if (elements.pdfFileInput) elements.pdfFileInput.value = '';
     return;
   }
 
   appState.uploadedFiles.pdf = file;
-  elements.pdfFileText.textContent = `✓ ${file.name}`;
-  elements.pdfUploadZone.style.borderColor = 'var(--color-success)';
-  elements.pdfUploadZone.style.background = '#f1f8f4';
+  if (elements.pdfFileText) elements.pdfFileText.textContent = `✓ ${file.name}`;
+  if (elements.pdfUploadZone) {
+    elements.pdfUploadZone.style.borderColor = 'var(--color-success)';
+    elements.pdfUploadZone.style.background = '#f1f8f4';
+  }
 }
 
 // ========================================
@@ -302,6 +318,7 @@ function handlePDFFileUpload(file) {
 // ========================================
 
 function validateUUIDInput() {
+  if (!elements.uuidInput) return;
   const uuid = elements.uuidInput.value.trim();
 
   if (uuid === '') {
@@ -326,7 +343,7 @@ function validateForm() {
   let isValid = true;
 
   // Validar que haya OC seleccionada (usando los hidden)
-  if (!elements.ocHidden.value || !elements.emHidden.value) {
+  if (!elements.ocHidden?.value || !elements.emHidden?.value) {
     alert('Por favor selecciona una orden de compra antes de enviar la factura.');
     isValid = false;
   }
@@ -338,10 +355,10 @@ function validateForm() {
         isValid = false;
       }
     } else {
-      const xmlContent = elements.xmlTextarea.value.trim();
+      const xmlContent = elements.xmlTextarea?.value.trim() ?? '';
       if (xmlContent === '') {
         showError(elements.xmlContentError, 'Por favor, pega el contenido XML.');
-        elements.xmlTextarea.classList.add('error');
+        elements.xmlTextarea?.classList.add('error');
         isValid = false;
       } else {
         const uuid = extractUUIDFromXML(xmlContent);
@@ -352,14 +369,14 @@ function validateForm() {
       }
     }
   } else if (appState.selectedMethod === 'uuid') {
-    const uuid = elements.uuidInput.value.trim();
+    const uuid = elements.uuidInput?.value.trim() ?? '';
     if (uuid === '') {
       showError(elements.uuidError, 'Por favor, ingresa el UUID de la factura.');
-      elements.uuidInput.classList.add('error');
+      elements.uuidInput?.classList.add('error');
       isValid = false;
     } else if (!validateUUID(uuid)) {
       showError(elements.uuidError, 'Formato UUID inválido.');
-      elements.uuidInput.classList.add('error');
+      elements.uuidInput?.classList.add('error');
       isValid = false;
     }
   } else if (appState.selectedMethod === 'pdf') {
@@ -384,8 +401,8 @@ function handleSubmit(e) {
 
   const formData = {
     method: appState.selectedMethod,
-    ordenCompra: elements.ocHidden.value,
-    entradaMercancia: elements.emHidden.value
+    ordenCompra: elements.ocHidden?.value,
+    entradaMercancia: elements.emHidden?.value
   };
 
   if (appState.selectedMethod === 'xml') {
@@ -393,20 +410,20 @@ function handleSubmit(e) {
       formData.xmlFile = appState.uploadedFiles.xml;
       formData.extractedUUID = appState.extractedUUID;
     } else {
-      formData.xmlContent = elements.xmlTextarea.value.trim();
+      formData.xmlContent = elements.xmlTextarea?.value.trim();
       formData.extractedUUID = appState.extractedUUID;
     }
   } else if (appState.selectedMethod === 'uuid') {
-    formData.uuid = elements.uuidInput.value.trim();
+    formData.uuid = elements.uuidInput?.value.trim();
   } else if (appState.selectedMethod === 'pdf') {
     formData.pdfFile = appState.uploadedFiles.pdf;
   }
 
   console.log('Datos del formulario listos para enviar al bot:', formData);
 
-  // 🔹 Aquí en la POC asumimos éxito del bot y mostramos la pantalla de resultado
-  if (elements.form && elements.resultadoStep) {
-    elements.form.style.display = 'none';
+  // Para la PoC asumimos éxito del bot y mostramos la pantalla de resultado
+  if (elements.facturaStep && elements.resultadoStep) {
+    elements.facturaStep.style.display = 'none';
     elements.resultadoStep.style.display = 'flex';
   }
 }
@@ -439,8 +456,8 @@ function handleReset() {
 
   clearAllErrors();
 
-  // Volver a mostrar el formulario y ocultar resultado
-  if (elements.form) elements.form.style.display = 'block';
+  // Volver a mostrar la pantalla de carga y ocultar resultado
+  if (elements.facturaStep) elements.facturaStep.style.display = 'block';
   if (elements.resultadoStep) elements.resultadoStep.style.display = 'none';
 }
 
@@ -449,16 +466,12 @@ function handleReset() {
 // ========================================
 
 function initEventListeners() {
-  if (elements.xmlMethodBtn) {
-    elements.xmlMethodBtn.addEventListener('click', () => changeMethod('xml'));
-  }
-  if (elements.uuidMethodBtn) {
-    elements.uuidMethodBtn.addEventListener('click', () => changeMethod('uuid'));
-  }
-  if (elements.pdfMethodBtn) {
-    elements.pdfMethodBtn.addEventListener('click', () => changeMethod('pdf'));
-  }
+  // Botones de método
+  elements.xmlMethodBtn?.addEventListener('click', () => changeMethod('xml'));
+  elements.uuidMethodBtn?.addEventListener('click', () => changeMethod('uuid'));
+  elements.pdfMethodBtn?.addEventListener('click', () => changeMethod('pdf'));
 
+  // Toggle opciones alternativas
   if (elements.toggleOptionsBtn && elements.alternativeOptions) {
     elements.toggleOptionsBtn.addEventListener('click', () => {
       elements.alternativeOptions.classList.toggle('show');
@@ -466,11 +479,13 @@ function initEventListeners() {
     });
   }
 
+  // Toggle XML
   if (elements.xmlFileToggle && elements.xmlPasteToggle) {
     elements.xmlFileToggle.addEventListener('click', () => toggleXMLInput('file'));
     elements.xmlPasteToggle.addEventListener('click', () => toggleXMLInput('paste'));
   }
 
+  // Zona de carga XML
   if (elements.xmlUploadZone && elements.xmlFileInput) {
     elements.xmlUploadZone.addEventListener('click', () => elements.xmlFileInput.click());
     elements.xmlFileInput.addEventListener('change', (e) => {
@@ -483,9 +498,11 @@ function initEventListeners() {
       e.preventDefault();
       elements.xmlUploadZone.classList.add('dragover');
     });
+
     elements.xmlUploadZone.addEventListener('dragleave', () => {
       elements.xmlUploadZone.classList.remove('dragover');
     });
+
     elements.xmlUploadZone.addEventListener('drop', (e) => {
       e.preventDefault();
       elements.xmlUploadZone.classList.remove('dragover');
@@ -495,6 +512,7 @@ function initEventListeners() {
     });
   }
 
+  // Zona de carga PDF
   if (elements.pdfUploadZone && elements.pdfFileInput) {
     elements.pdfUploadZone.addEventListener('click', () => elements.pdfFileInput.click());
     elements.pdfFileInput.addEventListener('change', (e) => {
@@ -507,9 +525,11 @@ function initEventListeners() {
       e.preventDefault();
       elements.pdfUploadZone.classList.add('dragover');
     });
+
     elements.pdfUploadZone.addEventListener('dragleave', () => {
       elements.pdfUploadZone.classList.remove('dragover');
     });
+
     elements.pdfUploadZone.addEventListener('drop', (e) => {
       e.preventDefault();
       elements.pdfUploadZone.classList.remove('dragover');
@@ -519,24 +539,21 @@ function initEventListeners() {
     });
   }
 
+  // Validación UUID
   if (elements.uuidInput) {
     elements.uuidInput.addEventListener('input', validateUUIDInput);
     elements.uuidInput.addEventListener('blur', validateUUIDInput);
   }
 
-  if (elements.form) {
-    elements.form.addEventListener('submit', handleSubmit);
-  }
+  // Formulario
+  elements.form?.addEventListener('submit', handleSubmit);
+  elements.cancelBtn?.addEventListener('click', handleReset);
 
-  if (elements.cancelBtn) {
-    elements.cancelBtn.addEventListener('click', handleReset);
-  }
-
-  // Botones de la pantalla de resultado
+  // Pantalla de resultado: descargar PDF
   if (elements.descargarPdfBtn) {
     elements.descargarPdfBtn.addEventListener('click', () => {
       const link = document.createElement('a');
-      link.href = 'ContraseñaDePago.pdf'; // Asegúrate de tener este archivo en el repo
+      link.href = 'ContraseñaDePago.pdf'; // Debe existir en el repo
       link.download = 'contraseña_pago.pdf';
       document.body.appendChild(link);
       link.click();
@@ -544,13 +561,12 @@ function initEventListeners() {
     });
   }
 
+  // Pantalla de resultado: cargar otra factura
   if (elements.nuevaFacturaBtn) {
     elements.nuevaFacturaBtn.addEventListener('click', () => {
       if (elements.resultadoStep) elements.resultadoStep.style.display = 'none';
-      if (elements.form) {
-        elements.form.style.display = 'block';
-        elements.form.reset();
-      }
+      if (elements.facturaStep) elements.facturaStep.style.display = 'block';
+      if (elements.form) elements.form.reset();
       handleReset();
     });
   }
