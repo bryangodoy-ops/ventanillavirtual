@@ -345,16 +345,25 @@
                     </div>
                 </form>
                 <!-- Mensaje de resultado y botón de descarga -->
-<div id="resultado-validacion" class="resultado-validacion" style="display: none;">
-  <p class="resultado-mensaje">
-    ✅ Factura recepcionada exitosamente
-  </p>
+<div id="resultado-step" class="resultado-step" style="display: none;">
+    <div class="resultado-card">
+      <h2 class="resultado-title">Factura recepcionada exitosamente</h2>
+      <p class="resultado-text">
+        Tu factura ha sido validada y enviada para registro en SAP.  
+        Puedes descargar la contraseña de pago para tu control.
+      </p>
 
-  <button type="button" class="btn btn-primary" id="descargarPdfBtn">
-    <i class="fas fa-file-download"></i>
-    <span>Descargar contraseña de pago</span>
-  </button>
-</div>
+      <button type="button" class="btn btn-primary" id="descargarPdfBtn">
+        <i class="fas fa-file-download"></i>
+        <span>Descargar contraseña de pago</span>
+      </button>
+
+      <button type="button" class="btn btn-secondary" id="nuevaFacturaBtn">
+        <i class="fas fa-arrow-left"></i>
+        <span>Cargar otra factura</span>
+      </button>
+    </div>
+  </div>
             </div>
         </main>
 
