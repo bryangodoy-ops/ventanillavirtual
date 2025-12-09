@@ -551,3 +551,38 @@ if (document.readyState === 'loading') {
 } else {
     init();
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.getElementById("facturaForm");
+  const resultadoBox = document.getElementById("resultado-validacion");
+  const descargarBtn = document.getElementById("descargarPdfBtn");
+
+  if (!form || !resultadoBox || !descargarBtn) return;
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    // Aquí en el futuro podrías esperar la respuesta del bot/RPA.
+    // Para la POC, asumimos que todo salió bien y mostramos el mensaje.
+
+    resultadoBox.style.display = "flex";
+
+    // Opcional: desactivar el botón de enviar para que no repitan el proceso
+    const submitBtn = document.getElementById("submitBtn");
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerText = "Procesada";
+    }
+  });
+
+  descargarBtn.addEventListener("click", function () {
+    // Descargar un PDF fijo para la POC
+    const link = document.createElement("a");
+    link.href = "ContraseñaDePago.pdf"; // pon aquí el nombre real del PDF en tu repo
+    link.download = "contraseña_pago.pdf";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  });
+});
+
